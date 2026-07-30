@@ -30,45 +30,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<Map<String, Object>> handleEmailAlreadyExistsException(
-            EmailAlreadyExistsException ex) {
-
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.CONFLICT.value());
-        response.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(PhoneNumberAlreadyExistsException.class)
-    public ResponseEntity<Map<String, Object>> handlePhoneNumberAlreadyExistsException(
-            PhoneNumberAlreadyExistsException ex) {
-
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.CONFLICT.value());
-        response.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleUserNotFoundException(
-            UserNotFoundException ex) {
-
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.NOT_FOUND.value());
-        response.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneralException(Exception ex) {
         Map<String, Object> response = new HashMap<>();

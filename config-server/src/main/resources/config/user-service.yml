@@ -5,9 +5,6 @@ spring:
   application:
     name: user-service
 
-  config:
-    import: optional:configserver:http://localhost:8888
-
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ecommerce_db}
     username: postgres

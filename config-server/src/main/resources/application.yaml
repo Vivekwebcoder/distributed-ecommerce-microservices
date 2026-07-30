@@ -5,9 +5,14 @@ spring:
   application:
     name: config-server
 
+  profiles:
+    active: git,native
+
   cloud:
     config:
       server:
+        native:
+          search-locations: classpath:/config,file:./,file:../
         git:
           uri: https://github.com/Vivekwebcoder/distributed-ecommerce-microservices.git
           default-label: develop_vivek
