@@ -37,27 +37,14 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public Long extractUserId(String token) {
+    public String extractUserId(String token) {
         Claims claims = extractAllClaims(token);
         Object userIdObj = claims.get("userId");
         if (userIdObj == null) {
             userIdObj = claims.get("id");
         }
         if (userIdObj != null) {
-            if (userIdObj instanceof Number number) {
-                return number.longValue();
-            }
-            try {
-                return Long.parseLong(userIdObj.toString());
-            } catch (NumberFormatException ignored) {
-            }
-        }
-        String subject = claims.getSubject();
-        if (subject != null) {
-            try {
-                return Long.parseLong(subject);
-            } catch (NumberFormatException ignored) {
-            }
+            return userIdObj.toString();
         }
         return null;
     }

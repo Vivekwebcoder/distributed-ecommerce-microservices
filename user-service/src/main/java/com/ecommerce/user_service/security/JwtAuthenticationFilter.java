@@ -44,26 +44,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             if (jwtService.isTokenValid(token)) {
                 String username = jwtService.extractUsername(token);
-                Long tokenUserId = jwtService.extractUserId(token);
+                String tokenUserId = jwtService.extractUserId(token);
                 String role = jwtService.extractRole(token);
 
-                Long finalUserId = tokenUserId;
+                String finalUserId = tokenUserId;
 
                 if (xUserIdHeader != null && !xUserIdHeader.isBlank()) {
-                    try {
-                        Long headerUserId = Long.parseLong(xUserIdHeader);
-                        if (tokenUserId != null && !tokenUserId.equals(headerUserId)) {
-                            log.warn("Security Alert: Header X-User-Id ({}) does not match JWT claim userId ({})", headerUserId, tokenUserId);
-                            filterChain.doFilter(request, response);
-                            return;
-                        }
-                        if (finalUserId == null) {
-                            finalUserId = headerUserId;
-                        }
-                    } catch (NumberFormatException e) {
-                        log.warn("Invalid X-User-Id header format: {}", xUserIdHeader);
+                    String headerUserId = xUserIdHeader.trim();
+                    if (tokenUserId != null && !tokenUserId.equalsIgnoreCase(headerUserId)) {
+                        log.warn("Security Alert: Header X-User-Id ({}) does not match JWT claim userId ({})", headerUserId, tokenUserId);
                         filterChain.doFilter(request, response);
                         return;
+                    }
+                    if (finalUserId == null) {
+                        finalUserId = headerUserId;
                     }
                 }
 

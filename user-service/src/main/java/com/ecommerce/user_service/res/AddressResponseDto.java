@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class AddressResponseDto {
 
     private Long id;
-    private Long userId;
+    private String userId;
     private String fullName;
     private String phoneNumber;
     private String flatHouseNo;

@@ -24,12 +24,12 @@ public class Address {
     private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(name = "full_name", nullable = false, length = 100)
     private String fullName;
 
-    @Column(name = "phone_number", nullable = false, length = 15)
+    @Column(name = "phone_number", nullable = false, unique = true, length = 15)
     private String phoneNumber;
 
     @Column(name = "flat_house_no", nullable = false, length = 150)

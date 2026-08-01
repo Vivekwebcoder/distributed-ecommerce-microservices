@@ -23,7 +23,7 @@ public class AddressController {
     @PostMapping
     public ResponseEntity<ApiResponse<AddressResponseDto>> addAddress(
             @Valid @RequestBody AddressRequestDto request) {
-        Long userId = SecurityUtils.getAuthenticatedUserId();
+        String userId = SecurityUtils.getAuthenticatedUserId();
         AddressResponseDto response = addressService.addAddress(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success("Address added successfully", response));
@@ -31,7 +31,7 @@ public class AddressController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<AddressResponseDto>>> getUserAddresses() {
-        Long userId = SecurityUtils.getAuthenticatedUserId();
+        String userId = SecurityUtils.getAuthenticatedUserId();
         List<AddressResponseDto> list = addressService.getAddressesByUserId(userId);
         return ResponseEntity.ok(ApiResponse.success("Addresses retrieved successfully", list));
     }
@@ -39,7 +39,7 @@ public class AddressController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<AddressResponseDto>> getAddressById(
             @PathVariable Long id) {
-        Long userId = SecurityUtils.getAuthenticatedUserId();
+        String userId = SecurityUtils.getAuthenticatedUserId();
         AddressResponseDto response = addressService.getAddressById(userId, id);
         return ResponseEntity.ok(ApiResponse.success("Address details fetched", response));
     }
@@ -48,7 +48,7 @@ public class AddressController {
     public ResponseEntity<ApiResponse<AddressResponseDto>> updateAddress(
             @PathVariable Long id,
             @Valid @RequestBody AddressRequestDto request) {
-        Long userId = SecurityUtils.getAuthenticatedUserId();
+        String userId = SecurityUtils.getAuthenticatedUserId();
         AddressResponseDto response = addressService.updateAddress(userId, id, request);
         return ResponseEntity.ok(ApiResponse.success("Address updated successfully", response));
     }
@@ -56,7 +56,7 @@ public class AddressController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteAddress(
             @PathVariable Long id) {
-        Long userId = SecurityUtils.getAuthenticatedUserId();
+        String userId = SecurityUtils.getAuthenticatedUserId();
         addressService.deleteAddress(userId, id);
         return ResponseEntity.ok(ApiResponse.success("Address deleted successfully", null));
     }
@@ -64,7 +64,7 @@ public class AddressController {
     @PutMapping("/{id}/default")
     public ResponseEntity<ApiResponse<Void>> setDefaultAddress(
             @PathVariable Long id) {
-        Long userId = SecurityUtils.getAuthenticatedUserId();
+        String userId = SecurityUtils.getAuthenticatedUserId();
         addressService.setDefaultAddress(userId, id);
         return ResponseEntity.ok(ApiResponse.success("Set as default address successfully", null));
     }

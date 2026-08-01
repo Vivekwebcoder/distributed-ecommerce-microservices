@@ -1,6 +1,7 @@
 package com.ecommerce.user_service.service.impl;
 
 import com.ecommerce.user_service.entity.Address;
+import com.ecommerce.user_service.exception.DuplicateResourceException;
 import com.ecommerce.user_service.exception.ResourceNotFoundException;
 import com.ecommerce.user_service.repository.AddressRepository;
 import com.ecommerce.user_service.req.AddressRequestDto;
@@ -21,7 +22,11 @@ public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
 
     @Override
-    public AddressResponseDto addAddress(Long userId, AddressRequestDto request) {
+    public AddressResponseDto addAddress(String userId, AddressRequestDto request) {
+        if (addressRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+            throw new DuplicateResourceException("Phone number " + request.getPhoneNumber() + " is already in use by another address");
+        }
+
         if (Boolean.TRUE.equals(request.getIsDefault())) {
             addressRepository.resetDefaultAddressForUser(userId);
         }
@@ -46,7 +51,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AddressResponseDto> getAddressesByUserId(Long userId) {
+    public List<AddressResponseDto> getAddressesByUserId(String userId) {
         List<Address> addresses = addressRepository.findByUserId(userId);
         return addresses.stream()
                 .map(this::mapToResponseDto)
@@ -55,16 +60,20 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional(readOnly = true)
-    public AddressResponseDto getAddressById(Long userId, Long id) {
+    public AddressResponseDto getAddressById(String userId, Long id) {
         Address address = addressRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address with ID " + id + " not found for this user"));
         return mapToResponseDto(address);
     }
 
     @Override
-    public AddressResponseDto updateAddress(Long userId, Long id, AddressRequestDto request) {
+    public AddressResponseDto updateAddress(String userId, Long id, AddressRequestDto request) {
         Address existingAddress = addressRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address with ID " + id + " not found for this user"));
+
+        if (addressRepository.existsByPhoneNumberAndIdNot(request.getPhoneNumber(), id)) {
+            throw new DuplicateResourceException("Phone number " + request.getPhoneNumber() + " is already in use by another address");
+        }
 
         if (Boolean.TRUE.equals(request.getIsDefault())) {
             addressRepository.resetDefaultAddressForUser(userId);
@@ -86,14 +95,14 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void deleteAddress(Long userId, Long id) {
+    public void deleteAddress(String userId, Long id) {
         Address address = addressRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address with ID " + id + " not found for this user"));
         addressRepository.delete(address);
     }
 
     @Override
-    public void setDefaultAddress(Long userId, Long id) {
+    public void setDefaultAddress(String userId, Long id) {
         Address address = addressRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address with ID " + id + " not found for this user"));
 

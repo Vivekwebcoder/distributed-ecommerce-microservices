@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface AddressService {
 
-    AddressResponseDto addAddress(Long userId, AddressRequestDto request);
+    AddressResponseDto addAddress(String userId, AddressRequestDto request);
 
-    List<AddressResponseDto> getAddressesByUserId(Long userId);
+    List<AddressResponseDto> getAddressesByUserId(String userId);
 
-    AddressResponseDto getAddressById(Long userId, Long id);
+    AddressResponseDto getAddressById(String userId, Long id);
 
-    AddressResponseDto updateAddress(Long userId, Long id, AddressRequestDto request);
+    AddressResponseDto updateAddress(String userId, Long id, AddressRequestDto request);
 
-    void deleteAddress(Long userId, Long id);
+    void deleteAddress(String userId, Long id);
 
-    void setDefaultAddress(Long userId, Long id);
+    void setDefaultAddress(String userId, Long id);
 }
