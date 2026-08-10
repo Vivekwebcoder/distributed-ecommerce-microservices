@@ -30,6 +30,10 @@ replay_pid*
 # Maven
 target/
 
+# Node
+node_modules/
+scratch/
+
 # OS files
 .DS_Store
 Thumbs.db
