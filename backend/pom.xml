@@ -47,6 +47,7 @@
         <module>auth-service</module>
         <module>inventory-service</module>
         <module>cart-service</module>
+        <module>product-service</module>
     </modules>
 
 </project>
