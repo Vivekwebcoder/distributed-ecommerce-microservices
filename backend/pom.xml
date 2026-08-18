@@ -48,6 +48,7 @@
         <module>inventory-service</module>
         <module>cart-service</module>
         <module>product-service</module>
+        <module>order-service</module>
     </modules>
 
 </project>
